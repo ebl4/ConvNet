@@ -7,6 +7,14 @@ int mult(int a, int b){
 	return a*b;
 }
 
+/* Operacao de convolucao com duas matrizes a e b */
+int convolv(int* a, int* b, int fSize){
+	int i, j, result;
+	for(i = 0; i < fSize; i++){
+		result += a[i]*b[i];
+	}
+}
+
 int* sumVectors(int* a, int* b, int dim){
 	int* res;
 	res = malloc(dim * sizeof(int*));
