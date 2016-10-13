@@ -4,6 +4,8 @@
 
 int mult(int a, int b);
 
+int convolv(int* a, int* b, int fSize);
+
 int* sumVectors(int *a, int* b, int dim);
 
 void sumMatrix(int* a, int* b, int* c, int m, int n);
