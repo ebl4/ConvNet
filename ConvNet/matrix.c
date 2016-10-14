@@ -23,6 +23,7 @@ int* sumVectors(int* a, int* b, int dim){
 	for (cont = 0; cont < dim; cont++){
 		res[cont] = a[cont] + b[cont];
 	}
+	free(res);
 	return res;
 }
 
