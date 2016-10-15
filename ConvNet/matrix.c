@@ -16,6 +16,12 @@ int convolv(int* a, int* b, int fSize){
 	return result;
 }
 
+void initVector(int* a, int dim){
+	for(int i = 0; i < dim; ++i){
+		a[i] = 0;
+	}
+}
+
 int* sumVectors(int* a, int* b, int dim){
 	int* res;
 	res = malloc(dim * sizeof(int*));
@@ -23,7 +29,6 @@ int* sumVectors(int* a, int* b, int dim){
 	for (cont = 0; cont < dim; cont++){
 		res[cont] = a[cont] + b[cont];
 	}
-	free(res);
 	return res;
 }
 
