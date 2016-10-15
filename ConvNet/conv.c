@@ -23,7 +23,8 @@ Return -1 if slide does not match
 */
 int spatialSize(int inputWidth, int filterSize, int zeroPad, int stride){
 	int result = 0;
-	return ((result = inputWidth-filterSize+2*zeroPad)/stride)%2 == 0? result:-1;
+	result = (inputWidth-filterSize+2*zeroPad)/stride + 1;
+	return result;
 }
 
 void initSlice(int* v, int start, int end){
@@ -39,8 +40,9 @@ int* initFilter(int** filter, int depth, int filterSize){
 
 }
 
-void convolution(int** input, int** filter, int inputSize, int filterSize, int stride)){
-	int result = 0;
+void convolution(int** input, int** filter, int inputSize, int filterSize, int stride){
+	int result = 0, offset = 0, l1, l2;
+
 	int slide = spatialSize(inputSize, filterSize, 0, stride);
 	int *v, *f, *matrix;
 	int depth = 0;
@@ -50,33 +52,48 @@ void convolution(int** input, int** filter, int inputSize, int filterSize, int s
 	f = (int *) malloc(sizeof(int)*filterSize*filterSize);
 
 	
+	//recupera a matriz de entrada no nivel depth
 	matrix = input[depth];
+
+	//inicializa a matriz do filtro
 	f = initFilter(filter, depth, filterSize);
 
-	//inicializando v, fatia da matriz de entrada	
+	//inicializando v, fatia da matriz de entrada com tamanho do
+	// filtro
 	for (int r = 0; r < slide; ++r){
 		offset = r*inputSize;
+		printf("Slide colum %d\n", r+1);
+
 		for (int i = 0; i < slide; ++i)
 		{
 			int start = offset+i, end = start+filterSize-1;
-			for (int j = start; j < end; ++j)
+
+			printf("Slide line %d\n", i+1);
+
+			printf("Start in %d\n", start);
+			printf("End in %d\n", end);
+										
+			//offsets
+			l1 = inputSize;			
+			for (int k = 0; k < filterSize*filterSize; ++k)
 			{
-				//offsets
-				l1 = j*inputSize;
-				l2 = j*filterSize;
-				for (int k = 0; k < filterSize; ++k)
-				{
-					v[l2+k] = matrix[start+l1+k];
+				if(k < filterSize){
+					v[k] = matrix[k+start];
 				}
+				else{
+					l2 = (k+1)%filterSize;
+					v[k] = matrix[(l1+start)+l2];
+				}				
 			}
-			result = convolv(v, f, filterSize, filterSize);
-			printf("%d\n", result);
+			
+		result = convolv(v, f, filterSize*filterSize);
+		printf("%d\n", result);
 		}
 	}
 
 }
 
-int main(int argc, char const *argv[])
+int main()
 {
 	/* code */
 	int res;
@@ -107,9 +124,12 @@ int main(int argc, char const *argv[])
 
 	convolution(a, b, 3, 2, 1);
 
-	free(m1);free(m2);free(m3);free(a);free(b);
+//	res = spatialSize(3,2,0,1);
 
 	//printf("%d\n", res);
+
+	free(b);free(a);
+	free(m1);free(m2);
 
 	return 0;
 }
