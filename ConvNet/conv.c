@@ -40,6 +40,24 @@ int* initFilter(int** filter, int depth, int filterSize){
 
 }
 
+void multiFilterConvolution(int** input, int*** filter, int numFilters, int inputSize, int filterSize, int stride){
+	
+	for (int i = 0; i < filterSize; ++i)
+		{
+			
+		}	
+}
+
+
+void simpleFilterConvolution(int** input, int** filter, int inputSize, int filterSize, int depth, int stride){
+	int *input, *ftr;
+	for (int i = 0; i < depth; ++i)
+	{
+		/* code */
+	}
+
+}
+
 void convolution(int** input, int** filter, int inputSize, int filterSize, int stride){
 	int result = 0, offset = 0, l1, l2;
 
@@ -90,7 +108,7 @@ void convolution(int** input, int** filter, int inputSize, int filterSize, int s
 		printf("%d\n", result);
 		}
 	}
-
+	free(f);free(v);
 }
 
 int main()
