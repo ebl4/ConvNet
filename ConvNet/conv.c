@@ -107,22 +107,22 @@ int * convolution(int** input, int** filter, int inputSize, int filterSize, int 
 	return resultM;
 }
 
-void simpleFilterConvolution(int** input, int** filter, int inputSize, int filterSize, int depth, int stride){
+void simpleFilterConvolution(int** input, int** filter, int inputSize, int filterSize, int depths, int stride){
 	int slide = spatialSize(inputSize, filterSize, 0, stride);
 	int **matrix; 
 	int *result;
-	matrix = (int **) malloc(sizeof(int*)*depth);
+	matrix = (int **) malloc(sizeof(int*)*depths);
 	result = (int *) malloc(sizeof(int*)*slide*slide);
 	initVector(result, slide*slide);
 	
-	for (int i = 0; i < depth; ++i)
+	for (int i = 0; i < depths; ++i)
 	{
-		matrix[i] = convolution(input, filter, inputSize, filterSize, depth, stride);
+		matrix[i] = convolution(input, filter, inputSize, filterSize, i, stride);
 	}
 	
 	printf("After %d\n", result[0]);
 	
-	for (int i = 0; i < depth; ++i)
+	for (int i = 0; i < depths; ++i)
 	{
 		result = sumVectors(result, matrix[i], slide*slide);
 	}
@@ -174,7 +174,9 @@ int main()
 	//initVector(m3, n*n);
 
 	//printf("%d\n", res);
-	printf("%d\n", m3[3]);
+	//printf("%d\n", m3[3]);
+	
+	simpleFilterConvolution(a, b, 3, 2, 1, 1);
 
 	free(b);free(a);
 	free(m1);free(m2);free(m3);
