@@ -99,7 +99,15 @@ int * convolution(int** input, int** filter, int inputSize, int filterSize, int 
 	return resultM;
 }
 
-int * simpleFilterConvolution(int** input, int** filter, int inputSize, int filterSize, int depths, int stride){
+void adjustBias(int* result, int bias, int dim){
+	for (int i = 0; i < dim; ++i)
+	{
+		result[i] += bias;
+	}
+	//return result;
+}
+
+int * simpleFilterConvolution(int** input, int** filter, int bias, int inputSize, int filterSize, int depths, int stride){
 	int slide = spatialSize(inputSize, filterSize, 0, stride);
 	int **matrix; 
 	int *result;
@@ -118,18 +126,20 @@ int * simpleFilterConvolution(int** input, int** filter, int inputSize, int filt
 	{
 		result = sumVectors(result, matrix[i], slide*slide);
 	}
+
+	adjustBias(result, bias, slide);
 	
-	printf("Before %d\n", result[0]);	
+	//printf("Before %d\n", result[0]);	
 	return result;
 }
 
 
-void multiFilterConvolution(int** input, int*** filter, int numFilters, int inputSize, int filterSize, int depths, int stride){	
+void multiFilterConvolution(int** input, int*** filter, int* biases, int numFilters, int inputSize, int filterSize, int depths, int stride){	
 	int **result;
 	result = (int **) malloc(sizeof(int*)*numFilters);
 	for (int i = 0; i < numFilters; ++i)
-		{
-			result[i] = simpleFilterConvolution(input, filter[i], inputSize, filterSize, depths, stride);
+		{			
+			result[i] = simpleFilterConvolution(input, filter[i], biases[i], inputSize, filterSize, depths, stride);
 		}			
 	printf("Before %d\n", result[0][0]);
 	printf("Before %d\n", result[1][0]);
@@ -161,11 +171,12 @@ int ** allocateAllMatrix(int depths, int dim){
 int main()
 {
 	/* code */
-	int res, depths = 2, stride = 1;
+	int res, depths = 2, stride = 1, numFilters = 2;
 	int **a, **b, ***c;
-	int *m1, *m2, *m3, m = 3, n = 2;
+	int *m1, *m2, *m3, *biases, m = 3, n = 2;
 	m1 = (int *) malloc(sizeof(int)*m*m);
 	m2 = (int *) malloc(sizeof(int)*n*n);
+	biases = (int *) malloc(sizeof(int)*numFilters);
 	//m3 = (int *) malloc(sizeof(int)*n*n);
 
 	//a = (int **) malloc(sizeof(int*));
@@ -189,7 +200,7 @@ int main()
 
 //	m3 = allocateMatrix(m3, n);
 
-
+	biases[0] = 1;biases[1] = 2; 
 	b = allocateAllMatrix(depths, n);
 	a = allocateAllMatrix(depths, m);
 	c[0] = allocateAllMatrix(depths, n);
@@ -211,7 +222,7 @@ int main()
 	printf("%d\n", a[1][2]);
 	
 	//simpleFilterConvolution(a, b, m, n, depths, stride);
-	multiFilterConvolution(a, c, 2, m, n, depths, stride);
+	multiFilterConvolution(a, c, biases, numFilters, m, n, depths, stride);
 
 	free(b);free(a);
 	free(m1);free(m2);
