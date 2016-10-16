@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include "matrix.c"
 
+/*
+This code follow the examples obtained from Convolutinal Neural
+Networks Stanford Course present here http://cs231n.github.io/convolutional-networks/
+*/
+
 int testConv(int** a, int** b, int vDepth, int fSize){
 	int result = 0;
 	int *v, *f;
