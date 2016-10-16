@@ -39,14 +39,6 @@ int* initFilter(int** filter, int depth, int filterSize){
 	return f;
 }
 
-void multiFilterConvolution(int** input, int*** filter, int numFilters, int inputSize, int filterSize, int stride){
-	
-	for (int i = 0; i < filterSize; ++i)
-		{
-			
-		}	
-}
-
 
 int * convolution(int** input, int** filter, int inputSize, int filterSize, int depth, int stride){
 	int result = 0, cont = 0, offset = 0, l1, l2;		
@@ -107,7 +99,7 @@ int * convolution(int** input, int** filter, int inputSize, int filterSize, int 
 	return resultM;
 }
 
-void simpleFilterConvolution(int** input, int** filter, int inputSize, int filterSize, int depths, int stride){
+int * simpleFilterConvolution(int** input, int** filter, int inputSize, int filterSize, int depths, int stride){
 	int slide = spatialSize(inputSize, filterSize, 0, stride);
 	int **matrix; 
 	int *result;
@@ -127,28 +119,63 @@ void simpleFilterConvolution(int** input, int** filter, int inputSize, int filte
 		result = sumVectors(result, matrix[i], slide*slide);
 	}
 	
-	printf("Before %d\n", result[0]);
-	
+	printf("Before %d\n", result[0]);	
+	return result;
+}
+
+
+void multiFilterConvolution(int** input, int*** filter, int numFilters, int inputSize, int filterSize, int depths, int stride){	
+	int **result;
+	result = (int **) malloc(sizeof(int*)*numFilters);
+	for (int i = 0; i < numFilters; ++i)
+		{
+			result[i] = simpleFilterConvolution(input, filter[i], inputSize, filterSize, depths, stride);
+		}			
+	printf("Before %d\n", result[0][0]);
+	printf("Before %d\n", result[1][0]);
+}
+
+int * allocateMatrix(int *a, int dim){
+	int size = dim*dim;
+	a = (int *) malloc(sizeof(int)*size);
+	for (int i = 0; i < size; ++i)
+	{
+		a[i] = 1;
+	}
+
+	return a;
+}
+
+// Method for instantiate depth matrixs with randon numbers
+// between 0 and 2
+int ** allocateAllMatrix(int depths, int dim){
+	int **m;
+	m = (int **) malloc(sizeof(int*)*depths);
+	for (int i = 0; i < depths; ++i)
+	{
+		m[i] = allocateMatrix(m[i], dim);
+	}
+	return m;
 }
 
 int main()
 {
 	/* code */
-	int res;
-	int **a, **b;
+	int res, depths = 2, stride = 1;
+	int **a, **b, ***c;
 	int *m1, *m2, *m3, m = 3, n = 2;
 	m1 = (int *) malloc(sizeof(int)*m*m);
 	m2 = (int *) malloc(sizeof(int)*n*n);
-	m3 = (int *) malloc(sizeof(int)*n*n);
+	//m3 = (int *) malloc(sizeof(int)*n*n);
 
-	a = (int **) malloc(sizeof(int*));
-	b = (int **) malloc(sizeof(int*));
+	//a = (int **) malloc(sizeof(int*));
+	//b = (int **) malloc(sizeof(int*));
+	c = (int ***) malloc(sizeof(int**)*2);
 
 
 	m1[0] = 2;m1[1] = 3;m1[2] = 3;	
 	m1[3] = 2;m1[4] = 3;m1[5] = 2;		
-	m1[6] = 3;m1[7] = 2;m1[8] = 2;
-
+	m1[6] = 3;m1[7] = 2;m1[8] = 2;		
 
 	m2[0] = 2;
 	m2[1] = 3;
@@ -160,8 +187,13 @@ int main()
 	//m3[2] = 2;
 	//m3[3] = 3;
 
-	a[0] = m1;
-	b[0] = m2;
+//	m3 = allocateMatrix(m3, n);
+
+
+	b = allocateAllMatrix(depths, n);
+	a = allocateAllMatrix(depths, m);
+	c[0] = allocateAllMatrix(depths, n);
+	c[1] = allocateAllMatrix(depths, n);
 	//res = convolv(m1, m2, 4);
 	//res = testConv(a, b, 1, 2);
 
@@ -174,12 +206,15 @@ int main()
 	//initVector(m3, n*n);
 
 	//printf("%d\n", res);
-	//printf("%d\n", m3[3]);
+	printf("%d\n", b[0][1]);
+	printf("%d\n", b[1][1]);
+	printf("%d\n", a[1][2]);
 	
-	simpleFilterConvolution(a, b, 3, 2, 1, 1);
+	//simpleFilterConvolution(a, b, m, n, depths, stride);
+	multiFilterConvolution(a, c, 2, m, n, depths, stride);
 
 	free(b);free(a);
-	free(m1);free(m2);free(m3);
+	free(m1);free(m2);
 
 	return 0;
 }
