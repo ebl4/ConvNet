@@ -1,1 +1,1 @@
-# Implementation of Convolutional Neural Network with in C
+# Implementation of Convolutional Neural Network in C
