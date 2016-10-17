@@ -71,7 +71,7 @@ void zeroPaddingLastLineCol(int *input, int *inputZeroPad, int inputSize){
 				inputZeroPad[k+j] = 0;
 			}
 		}				
-	}	
+	}		
 }
 
 void maxPoolingProcess(int *input, int *result, int *filter, int inputSize, int slices){	
@@ -87,42 +87,48 @@ void maxPoolingProcess(int *input, int *result, int *filter, int inputSize, int 
 
 //Make max pooling with 2x2 filters
 void maxPooling(int *input, int *result, int inputSize){
-	int slices = 0;
-	int * filter = (int *) malloc(sizeof(int)*FILTER_SIZE); 
+	int slices = 0;	
+	int * filter;
+	filter = (int *) malloc(sizeof(int)*FILTER_SIZE); 
 	//int *result = (int *) malloc(sizeof(int)*slices*slices);
-	slices = (inputSize/2);
-	if(inputSize%2 != 0){
+	
+	if(inputSize%2 == 0){
+		printf("Here normal\n");		
+		slices = (inputSize/2);
 		maxPoolingProcess(input, result, filter, inputSize, slices);
 	}
-	else{
-		int * inputZeroPad = (int *) malloc(sizeof(int)*inputSize);
-		int inputZeroPadSize = inputSize+2;
-		zeroPadding(input, inputZeroPad, inputSize);
+	else{						
+		printf("Here padding\n");
+		int inputZeroPadSize = inputSize+1;
 		slices = inputZeroPadSize/2;
+		int * inputZeroPad = (int *) malloc(sizeof(int)*inputZeroPadSize);		
+		zeroPaddingLastLineCol(input, inputZeroPad, inputSize);		
 		maxPoolingProcess(inputZeroPad, result, filter, inputZeroPadSize, slices);
 	}
 }
 
 
 int main()
-{
-	int a[16] = {-3, -2 ,-6, -1,
-				3, 2 ,6, 1,
-				3, 2 ,6, 1,
-				-3, 2 ,-6, -1};
-	int *result = (int *) malloc(sizeof(int)*2*2);
-	int *zeroPaddingM = (int *) malloc(sizeof(int)*5*5);
+{	
+	int a[25] = {-3, -2 ,-6, -1, 1,
+				3, 2 ,6, 1, 1,
+				3, 2 ,6, 1, 1,
+				3, 2 ,6, 1, 1,
+				-3, 2 ,-6, -1, 1};
+	int slices = 3;
+	int *result = (int *) malloc(sizeof(int)*3*3);
+	//int *zeroPaddingM = (int *) malloc(sizeof(int)*5*5);
 
-	//maxPooling(a, result, 4);
+	maxPooling(a, result, 5);
 
 	//new matrix 6x6 zero padding
 	//zeroPadding(a, zeroPaddingM, 4);
-	zeroPaddingLastLineCol(a, zeroPaddingM, 4);
-	//printf("%d\n", result[3]);
+	//zeroPaddingLastLineCol(a, zeroPaddingM, 4);
+	printf("%d\n", result[8]);
 
-	printf("%d\n", zeroPaddingM[0]);
-	printf("%d\n", zeroPaddingM[4]);
+	//printf("%d\n", zeroPaddingM[0]);
+	//printf("%d\n", zeroPaddingM[4]);
 
-	free(result);free(zeroPaddingM);
+	free(result);
 	return 0;
 }
