@@ -28,6 +28,29 @@ void makeFilter(int *input, int inputSize, int* filter, int startLine, int start
 	//return filter;
 }
 
+//Return the input image envolved with zero padding 
+// input[i][j] -> matrixSize[i+1][j+1]
+void zeroPadding(int *input, int *inputZeroPad, int inputSize){
+	int arraySize = (inputSize+2);	
+	//int *inputZeroPad = (int *) malloc(sizeof(int)*arraySize);
+	int k = 0, k2 = 0;
+	for (int i = 0; i < arraySize; ++i)
+	{
+		//offsets
+		k = i*arraySize;
+		k2 = (i-1)*inputSize;
+		for (int j = 0; j < arraySize; ++j)
+		{
+			if((i != 0 && i != arraySize-1) && (j != 0 && j != arraySize-1)){				
+				inputZeroPad[k+j] = input[k2+(j-1)];
+			}
+			else{
+				inputZeroPad[k+j] = 0;
+			}
+		}				
+	}
+}
+
 //Make max pooling with 2x2 filters
 void maxPooling(int *input, int *result, int inputSize){
 	int slices = 0, startLine = -2, startCol = 0;
@@ -55,9 +78,17 @@ int main()
 				3, 2 ,6, 1,
 				-3, 2 ,-6, -1};
 	int *result = (int *) malloc(sizeof(int)*2*2);
+	int *zeroPaddingM = (int *) malloc(sizeof(int)*6*6);
 
-	maxPooling(a, result, 4);
-	printf("%d\n", result[3]);
+	//maxPooling(a, result, 4);
+
+	//new matrix 6x6 zero padding
+	zeroPadding(a, zeroPaddingM, 4);
+	//printf("%d\n", result[3]);
+
+	printf("%d\n", zeroPaddingM[0]);
+	printf("%d\n", zeroPaddingM[8]);
+
 	free(result);
 	return 0;
 }
