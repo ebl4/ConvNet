@@ -28,51 +28,6 @@ void makeFilter(int *input, int inputSize, int* filter, int startLine, int start
 	//return filter;
 }
 
-//Return the input image envolved with zero padding 
-// input[i][j] -> matrixSize[i+1][j+1]
-void zeroPadding(int *input, int *inputZeroPad, int inputSize){
-	int arraySize = (inputSize+2);	
-	//int *inputZeroPad = (int *) malloc(sizeof(int)*arraySize);
-	int k = 0, k2 = 0;
-	for (int i = 0; i < arraySize; ++i)
-	{
-		//offsets
-		k = i*arraySize;
-		k2 = (i-1)*inputSize;
-		for (int j = 0; j < arraySize; ++j)
-		{
-			if((i != 0 && i != arraySize-1) && (j != 0 && j != arraySize-1)){				
-				inputZeroPad[k+j] = input[k2+(j-1)];
-			}
-			else{
-				inputZeroPad[k+j] = 0;
-			}
-		}				
-	}
-}
-
-//Return the input image with zero padding in the both last line and column
-//The gols is to resize the odd inputSize to an even value
-void zeroPaddingLastLineCol(int *input, int *inputZeroPad, int inputSize){
-	int arraySize = (inputSize+1);	
-	//int *inputZeroPad = (int *) malloc(sizeof(int)*arraySize);
-	int k = 0, k2 = 0;
-	for (int i = 0; i < arraySize; ++i)
-	{
-		//offsets
-		k = i*arraySize;
-		k2 = i*inputSize;
-		for (int j = 0; j < arraySize; ++j)
-		{
-			if(i != arraySize-1 && j != arraySize-1){
-				inputZeroPad[k+j] = input[k2+j];
-			}
-			else{
-				inputZeroPad[k+j] = 0;
-			}
-		}				
-	}		
-}
 
 void maxPoolingProcess(int *input, int *result, int *filter, int inputSize, int slices){	
 	int startLine = -2, startCol = 0;

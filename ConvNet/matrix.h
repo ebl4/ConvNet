@@ -4,6 +4,10 @@
 
 int mult(int a, int b);
 
+//void zeroPadding(int *input, int *inputZeroPad, int inputSize);
+
+//void zeroPaddingLastLineCol(int *input, int *inputZeroPad, int inputSize);
+
 int convolv(int* a, int* b, int fSize);
 
 int* sumVectors(int *a, int* b, int dim);
