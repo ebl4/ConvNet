@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <math.h>
-#include "matrix.c"
+//#include "matrix.c"
 #define FILTER_SIZE 4
 
 

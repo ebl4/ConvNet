@@ -7,11 +7,11 @@ int mult(int a, int b){
 	return a*b;
 }
 
-int max(int a, int b){
+int maxVal(int a, int b){
 	return (a > b) ? a : b;
 }
 
-int min(int a, int b){
+int minVal(int a, int b){
 	return (a < b) ? a : b;
 }
 
@@ -109,3 +109,15 @@ void multMatrix(int* a, int* b, int* c, int m, int n, int p){
 		}
 	}
 }
+
+void testFunc(int a, int *res){
+	*res = a+1;
+}
+
+
+// int main(){
+// 	int res = 0;
+// 	testFunc(2, &res);
+// 	printf("%d\n", res);
+// 	return 0;
+// }
