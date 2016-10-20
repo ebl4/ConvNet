@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "matrix.c"
+//#include "matrix.h"
+#include "conv.c"
 
 int ** maxOutputLayear(int** outputA, int** outputB, int dimA, int dimB){
 	return (dimA > dimB) ? outputA : outputB;
@@ -104,32 +105,32 @@ void depthConcatLayers(int** outputA, int** outputB, int** outputConcat, int dep
 
 
 
-int main(){
+// int main(){
 
-	int *m1, *m2, *m3, *biases, m = 3, n = 2;
-	int **a, **b, **c;
-	m1 = (int *) malloc(sizeof(int)*m*m);
-	m2 = (int *) malloc(sizeof(int)*n*n);
-	m3 = (int *) malloc(sizeof(int)*m*m);
+// 	int *m1, *m2, *m3, *biases, m = 3, n = 2;
+// 	int **a, **b, **c;
+// 	m1 = (int *) malloc(sizeof(int)*m*m);
+// 	m2 = (int *) malloc(sizeof(int)*n*n);
+// 	m3 = (int *) malloc(sizeof(int)*m*m);
 
-	a = (int **) malloc(sizeof(int*));
- 	b = (int **) malloc(sizeof(int*));
- 	c = (int **) malloc(sizeof(int*));
+// 	a = (int **) malloc(sizeof(int*));
+//  	b = (int **) malloc(sizeof(int*));
+//  	c = (int **) malloc(sizeof(int*));
 
 
-	m1[0] = 2;m1[1] = 3;m1[2] = 3;	
-	m1[3] = 2;m1[4] = 3;m1[5] = 2;		
-	m1[6] = 3;m1[7] = 2;m1[8] = 2;		
+// 	m1[0] = 2;m1[1] = 3;m1[2] = 3;	
+// 	m1[3] = 2;m1[4] = 3;m1[5] = 2;		
+// 	m1[6] = 3;m1[7] = 2;m1[8] = 2;		
 
-	m2[0] = 2;
-	m2[1] = 3;
-	m2[2] = 2;
-	m2[3] = 3;
+// 	m2[0] = 2;
+// 	m2[1] = 3;
+// 	m2[2] = 2;
+// 	m2[3] = 3;
 
-	a[0] = m1;
-	b[0] = m2;
+// 	a[0] = m1;
+// 	b[0] = m2;
 
-	depthConcatLayers(a, b, c, 1, 1, m, n);
-	printf("%d\n", c[0][0]);
+// 	depthConcatLayers(a, b, c, 1, 1, m, n);
+// 	printf("%d\n", c[0][0]);
 
-}
+// }

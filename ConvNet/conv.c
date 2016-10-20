@@ -142,7 +142,7 @@ int * simpleFilterConvolution(int** input, int** filter, int bias, int inputSize
 }
 
 
-void multiFilterConvolution(int** input, int*** filter, int* biases, int numFilters, int inputSize, int filterSize, int depths, int stride){	
+int** multiFilterConvolution(int** input, int*** filter, int* biases, int numFilters, int inputSize, int filterSize, int depths, int stride){	
 	int **result;
 	result = (int **) malloc(sizeof(int*)*numFilters);
 	for (int i = 0; i < numFilters; ++i)
@@ -151,6 +151,8 @@ void multiFilterConvolution(int** input, int*** filter, int* biases, int numFilt
 		}			
 	printf("Before %d\n", result[0][0]);
 	printf("Before %d\n", result[1][0]);
+
+	return result;
 }
 
 int * allocateMatrix(int *a, int dim){
