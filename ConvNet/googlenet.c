@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "inceptionModule.c"
 #define NUM_OUTPUTS 9
 #define FILTER_SIZE_MP_OUTPUT 7
@@ -9,13 +10,30 @@
 #define AGV_POOL_OPT 0
 
 
+int sumExponetial(int *array, int dim){
+	int result = 0;
+	for (int i = 0; i < dim; ++i)
+	{
+		result += exp(array[i]);
+	}
+
+	return result;
+}
+
+void softmax(int* array, int *newArrayNorm, int elto, int dim){
+	int sumExponetialResult = sumExponetial(array, newArrayNorm, elto, dim);
+	for (int i = 0; i < dim; ++i)
+	{
+		newArrayNorm[i] = array[i]/sumExponetial;
+	}
+}
+
 void initOutputSize(int *outputSize, int numOutputs){
 	for (int i = 0; i < numOutputs; ++i)
 	{
 		outputSize[i] = 0;
 	}
 }
-
 
 
 void auxiliarClassifier(){
