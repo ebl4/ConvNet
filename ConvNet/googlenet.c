@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "inceptionModule.c"
 #define NUM_OUTPUTS 9
+#define FILTER_SIZE_MP_OUTPUT 7
+#define FILTER_SIZE_MP_AUX 5
+#define STRIDE_MPC 1
+#define STRIDE_MP_AUX 3
+#define AGV_POOL_OPT 0
 
 
 void initOutputSize(int *outputSize, int numOutputs){
@@ -8,6 +14,20 @@ void initOutputSize(int *outputSize, int numOutputs){
 	{
 		outputSize[i] = 0;
 	}
+}
+
+
+
+void auxiliarClassifier(){
+	pooling(input, output, inputSize, FILTER_SIZE_MPC, STRIDE_MPC, AGV_POOL_OPT);
+	multiFilterConvolution();
+	fc(input, filter, biases, numFilters, inputSize, filterSize, depths, stride);
+	fc(input, filter, biases, numFilters, inputSize, filterSize, depths, stride);			
+}
+
+void outputClassifier(int **input, int **output, int inputSize, int ***filters, int numFilters, int* filterSize, int depths, int *biases){
+	pooling(input, output, inputSize, FILTER_SIZE_MPC, STRIDE_MPC, AGV_POOL_OPT);	
+	fc(input, filter, biases, numFilters, inputSize, filterSize, depths, stride);		
 }
 
 void description(int **input, int **output, int inputSize, int ****filters, int *numFilters, int numWeigths, int* filterSize, int* depths, int **biases){
@@ -42,6 +62,5 @@ void description(int **input, int **output, int inputSize, int ****filters, int 
 	}
 
 	inception(output,  **output2,  outputSize,  ****filters,  *numFilters,  numWeigths, * filterSize, * depths,  **biases);
-
 
 }

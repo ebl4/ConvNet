@@ -32,6 +32,7 @@ int spatialSize(int inputWidth, int filterSize, int zeroPad, int stride){
 	return result;
 }
 
+
 void initSlice(int* v, int start, int end){
 
 }
